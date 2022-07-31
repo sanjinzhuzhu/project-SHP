@@ -3,7 +3,8 @@
     <Header></Header>
     <!-- 路由组件出口的地方 -->
     <router-view></router-view>
-    <Footer></Footer>
+    <!-- <Footer v-show="$route.path =='/home'|| $route.path=='/search'"></Footer> 可以用路由元信息-->
+    <Footer v-show="$route.meta.show"></Footer>
   </div>
 </template>
 
