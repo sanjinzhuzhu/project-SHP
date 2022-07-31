@@ -92,7 +92,8 @@ export default {
       
       //4、路由组件能不能传递props数据
       //可以的 有三种写法
-     this.$router.push({name:"search",params:{keyword:this.keyword},query:{k:this.keyword.toUpperCase()}})
+     this.$router.push({name:"search",params:{keyword:this.keyword},query:{k:this.keyword.toUpperCase()}},()=>{},()=>{});
+     console.log(this.$router);
     },
   },
 };
