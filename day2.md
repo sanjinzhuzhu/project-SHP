@@ -42,3 +42,15 @@ HTML +CSS + 图片资源
 http://gmall-h5-api.atguigu.cn/api/product/getBaseCategoryList
 --整个项目，接口前缀都有/api字样
 
+六、axios二次封装
+XMLHttpRequest、fetch、JQ、axios
+1.为什么需要进行二次封装axios？
+请求拦截器、响应拦截器 请求拦截器，可以在发请求之前可以处理一些业务、响应拦截器，当服务器数据返回以后，可以处理一些事情
+step1:npm install --sava axios
+
+2.在项目当中经常会有API文件夹 是用来放【axios】请求的
+接口当中：路径都带有/api
+baseURL:"/api"  如：http://xxx.xxx:8080/api
+
+七、接口统一管理
+
