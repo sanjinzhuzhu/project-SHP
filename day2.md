@@ -18,7 +18,27 @@ function VueRouter(){
 }
 //原型对象的方法
 VueRouter.prototype.push = function(){
-//函数执行的上下文为this
+//函数执行的上下文为this，VueRouter类的一个实例
 }
 let $router = new VueRouter();
 $router.push(xxx);
+
+二、Home模块组件拆分
+--先把静态页面完成
+--拆分出静态组件
+--获取服务器的数据进行展示
+--动态业务
+
+三、三级联动组件完成
+---由于三级联动，在Home、Search、Detail,把三级联动注册为全局组件
+好处:只需要注册一次，就可以在项目任何地方使用
+
+四、完成其余静态组件
+HTML +CSS + 图片资源
+
+五、POSTMAN测试接口
+--刚刚经过Apipost工具测试，接口是没有问题的
+--如果服务器返回的数据code字段200，代表服务器返回数据成功（接口地址+api+xxx）
+http://gmall-h5-api.atguigu.cn/api/product/getBaseCategoryList
+--整个项目，接口前缀都有/api字样
+
