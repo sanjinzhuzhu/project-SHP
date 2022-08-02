@@ -66,3 +66,19 @@ http://39.98.123.211         ----后台服务器
 JSONP、 CROS、代理
 
 八、nprogress进度条的使用
+start :进度条开始
+done: 进度条结束
+进度条颜色可以修改的，需要在node_modules去修改nprogress的样式
+
+九、vuex状态管理库
+
+1.vuex是官方提供的一个插件，集中式管理项目中组件共用的数据
+但是并不是全部项目都需要vuex，如果项目很小，完全不需要vuex，
+如果项目很大，组件很多、数据很多，数据维护很费劲，vuex
+state
+mutations
+actions
+getters
+modules
+
+2.vuex基本使用
