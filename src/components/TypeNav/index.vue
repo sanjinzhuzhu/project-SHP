@@ -16,7 +16,7 @@
         <div class="all-sort-list2">
           <div
             class="item bo"
-            v-for="(c1, index) in categoryList"
+            v-for="(c1) in categoryList"
             :key="c1.categoryId"
           >
             <h3>
@@ -25,7 +25,7 @@
             <div class="item-list clearfix">
               <div
                 class="subitem"
-                v-for="(c2, index) in c1.categoryChild"
+                v-for="(c2) in c1.categoryChild"
                 :key="c2.categoryId"
               >
                 <dl class="fore">
@@ -34,7 +34,7 @@
                   </dt>
                   <dd>
                     <em
-                      v-for="(c3, index) in c2.categoryChild"
+                      v-for="(c3) in c2.categoryChild"
                       :key="c3.categoryId"
                     >
                       <a href="">{{ c3.categoryName }}</a>
@@ -110,7 +110,7 @@ export default {
       height: 461px;
       position: absolute;
       background: #fafafa;
-      z-index: 999;
+      z-: 999;
 
       .all-sort-list2 {
         .item {
@@ -136,7 +136,7 @@ export default {
             left: 210px;
             border: 1px solid #ddd;
             top: 0;
-            z-index: 9999 !important;
+            z-: 9999 !important;
 
             .subitem {
               float: left;
