@@ -1,7 +1,45 @@
 <template>
   <div class="type-nav">
     <div class="container">
-      <h2 class="all">全部商品分类</h2>
+        <!-- 事件委派｜事件委托 -->
+      <div @mouseleave="leaveIndex">
+        <h2 class="all">全部商品分类</h2>
+        <div class="sort">
+          <div class="all-sort-list2">
+            <div
+              class="item bo"
+              v-for="(c1, index) in categoryList.slice(0, 16)"
+              :key="c1.categoryId"
+              :class="{ cur: currentIndex == index }"
+            >
+              <h3 @mouseenter="changeIndex(index)" @mouseleave="leaveIndex">
+                <a href="">{{ c1.categoryName }}-{{ index }}</a>
+              </h3>
+              <div class="item-list clearfix">
+                <div
+                  class="subitem"
+                  v-for="(c2, index) in c1.categoryChild"
+                  :key="c2.categoryId"
+                >
+                  <dl class="fore">
+                    <dt>
+                      <a href="">{{ c2.categoryName }} -{{ index }}</a>
+                    </dt>
+                    <dd>
+                      <em
+                        v-for="(c3, index) in c2.categoryChild"
+                        :key="c3.categoryId"
+                      >
+                        <a href="">{{ c3.categoryName }}-{{ index }}</a>
+                      </em>
+                    </dd>
+                  </dl>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <nav class="nav">
         <a href="###">服装城</a>
         <a href="###">美妆馆</a>
@@ -12,40 +50,6 @@
         <a href="###">有趣</a>
         <a href="###">秒杀</a>
       </nav>
-      <div class="sort">
-        <div class="all-sort-list2">
-          <div
-            class="item bo"
-            v-for="(c1) in categoryList"
-            :key="c1.categoryId"
-          >
-            <h3>
-              <a href="">{{ c1.categoryName }}</a>
-            </h3>
-            <div class="item-list clearfix">
-              <div
-                class="subitem"
-                v-for="(c2) in c1.categoryChild"
-                :key="c2.categoryId"
-              >
-                <dl class="fore">
-                  <dt>
-                    <a href="">{{ c2.categoryName }}</a>
-                  </dt>
-                  <dd>
-                    <em
-                      v-for="(c3) in c2.categoryChild"
-                      :key="c3.categoryId"
-                    >
-                      <a href="">{{ c3.categoryName }}</a>
-                    </em>
-                  </dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -54,6 +58,12 @@
 import { mapState } from "vuex";
 export default {
   name: "TypeNav",
+  data() {
+    return {
+      //存储用户鼠标移上哪一个一级分类
+      currentIndex: -1,
+    };
+  },
   //组件挂载完毕：可以向服务器发请求
   mounted() {
     //通知Vuex发请求，获取数据，存储于仓库中
@@ -67,6 +77,18 @@ export default {
       // }简写为下面
       categoryList: (state) => state.home.categoryList,
     }),
+  },
+  methods: {
+    //鼠标进入修改响应式数据currentIndex属性
+    changeIndex(index) {
+      //index:鼠标移上某一个一级分类的元素的索引值
+      this.currentIndex = index;
+    },
+    //一级分类鼠标移出的事件回调
+    leaveIndex() {
+      //鼠标移出currentIndex,变为-1；
+      this.currentIndex = -1;
+    },
   },
 };
 </script>
@@ -186,6 +208,9 @@ export default {
               display: block;
             }
           }
+        }
+        .cur {
+          background: skyblue;
         }
       }
     }
