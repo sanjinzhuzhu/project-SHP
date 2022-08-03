@@ -14,26 +14,36 @@
       </nav>
       <div class="sort">
         <div class="all-sort-list2">
-          <div class="item bo" v-for="(c1,index) in categoryList" :key="c1.categoryId">
+          <div
+            class="item bo"
+            v-for="(c1, index) in categoryList"
+            :key="c1.categoryId"
+          >
             <h3>
-              <a href="">{{c1.categoryName}}</a>
+              <a href="">{{ c1.categoryName }}</a>
             </h3>
             <div class="item-list clearfix">
-              <div class="subitem" v-for="(c2,index) in  c1.categoryChild" :key="c2.categoryId">
+              <div
+                class="subitem"
+                v-for="(c2, index) in c1.categoryChild"
+                :key="c2.categoryId"
+              >
                 <dl class="fore">
                   <dt>
-                    <a href="">{{c2.categoryName}}</a>
+                    <a href="">{{ c2.categoryName }}</a>
                   </dt>
                   <dd>
-                    <em v-for="(c3,index) in c2.categoryChild" :key="c3.categoryId">
-                      <a href="">{{c3.categoryName}}</a>
+                    <em
+                      v-for="(c3, index) in c2.categoryChild"
+                      :key="c3.categoryId"
+                    >
+                      <a href="">{{ c3.categoryName }}</a>
                     </em>
                   </dd>
                 </dl>
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </div>
