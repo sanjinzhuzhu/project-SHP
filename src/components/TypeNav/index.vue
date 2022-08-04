@@ -6,7 +6,7 @@
         <h2 class="all">全部商品分类</h2>
         <!-- 三级联动 -->
         <div class="sort">
-          <div class="all-sort-list2">
+          <div class="all-sort-list2" @click="goSearch">
             <div
               class="item bo"
               v-for="(c1, index) in categoryList.slice(0, 16)"
@@ -14,7 +14,13 @@
               :class="{ cur: currentIndex == index }"
             >
               <h3 @mouseenter="changeIndex(index)" @mouseleave="leaveIndex">
-                <a href="">{{ c1.categoryName }}-{{ index }}</a>
+                <!-- <a href="">{{ c1.categoryName }}</a> -->
+                <!-- <router-link to="/search">{{ c1.categoryName }}</router-link>卡顿 -->
+                <a
+                  :data-categoryName="c1.categoryName"
+                  :data-category1Id="c1.category1Id"
+                  >{{ c1.categoryName }}</a
+                >
               </h3>
               <!-- 二、三级分类 -->
               <div
@@ -23,19 +29,28 @@
               >
                 <div
                   class="subitem"
-                  v-for="(c2, index) in c1.categoryChild"
+                  v-for="c2 in c1.categoryChild"
                   :key="c2.categoryId"
                 >
                   <dl class="fore">
                     <dt>
-                      <a href="">{{ c2.categoryName }} -{{ index }}</a>
+                      <!-- <a href="">{{ c2.categoryName }}</a> -->
+                      <!-- <router-link to="/search">{{ c2.categoryName }}</router-link> -->
+                      <a
+                        :data-categoryName="c2.categoryName"
+                        :data-category2Id="c2.category1Id"
+                        >{{ c2.categoryName }}</a
+                      >
                     </dt>
                     <dd>
-                      <em
-                        v-for="(c3, index) in c2.categoryChild"
-                        :key="c3.categoryId"
-                      >
-                        <a href="">{{ c3.categoryName }}-{{ index }}</a>
+                      <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
+                        <!-- <a href="">{{ c3.categoryName }}</a> -->
+                        <!-- <router-link to="/search">{{ c3.categoryName }}</router-link> -->
+                        <a
+                          :data-categoryName="c3.categoryName"
+                          :data-category3Id="c3.category1Id"
+                          >{{ c3.categoryName }}</a
+                        >
                       </em>
                     </dd>
                   </dl>
@@ -63,7 +78,7 @@
 import { mapState } from "vuex";
 //引入方式:把lodash全部功能函数引入
 import throttle from "lodash/throttle";
-
+import search from "@/store/search";
 
 export default {
   name: "TypeNav",
@@ -105,6 +120,38 @@ export default {
     leaveIndex() {
       //鼠标移出currentIndex,变为-1；
       this.currentIndex = -1;
+    },
+    //进行路由跳转的方法
+    goSearch(event) {
+      //this.$router.push('/search') 每一个a标签都有一个自己的回调，那循环会出现更多，所以不推荐
+      //最好的解决方案:编程式导航 + 事件委派
+      //利用时间委派存在一些问题:1:点击一定是a标签 2.如何获取参数【1、2、3级的产品名字，id】
+
+      //第一个问题:把子节点当中a标签，加上自定义data-categoryName，其余的子节点是没有的
+      let element = event.target;
+      //获取到当前触发这个事件的节点【h3、a、dt、dl】，需要带有data-categoryname这样的节点，【一定是a标签】
+      //节点有一个属性dataset属性，可以获取节点的自定义属性与属性值
+      let { categoryname, category1id, category2id, category3id } =
+        element.dataset;
+      //console.log(element.dataset); 如果标签身上有categoryname一定是a标签
+      if (categoryname) {
+        //整理路由跳转的参数
+        let location = { name: "search" };
+        let query = { categoryName: categoryname };
+        //如何知道是一、二、三级分类的a标签
+        if (category1id) {
+          query.category1id = category1id;
+        } else if (category2id) {
+          query.category2id = category2id;
+        } else {
+          query.category3id = category3id;
+        }
+        //整理参数 因为location和query现在是两个对象 所以要进行合并
+        location.query = query;
+        //路由跳转
+        this.$router.push(location);
+      }
+      //
     },
   },
 };
