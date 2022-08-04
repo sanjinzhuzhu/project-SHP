@@ -1,9 +1,10 @@
 <template>
   <div class="type-nav">
     <div class="container">
-        <!-- 事件委派｜事件委托 -->
+      <!-- 事件委派｜事件委托 -->
       <div @mouseleave="leaveIndex">
         <h2 class="all">全部商品分类</h2>
+        <!-- 三级联动 -->
         <div class="sort">
           <div class="all-sort-list2">
             <div
@@ -15,7 +16,11 @@
               <h3 @mouseenter="changeIndex(index)" @mouseleave="leaveIndex">
                 <a href="">{{ c1.categoryName }}-{{ index }}</a>
               </h3>
-              <div class="item-list clearfix">
+              <!-- 二、三级分类 -->
+              <div
+                class="item-list clearfix"
+                :style="{ display: currentIndex == index ? 'block' : 'none' }"
+              >
                 <div
                   class="subitem"
                   v-for="(c2, index) in c1.categoryChild"
@@ -56,6 +61,10 @@
 
 <script>
 import { mapState } from "vuex";
+//引入方式:把lodash全部功能函数引入
+import throttle from "lodash/throttle";
+
+
 export default {
   name: "TypeNav",
   data() {
@@ -80,10 +89,18 @@ export default {
   },
   methods: {
     //鼠标进入修改响应式数据currentIndex属性
-    changeIndex(index) {
+    //changeIndex(index) {},
+    //throttle回调函数别用箭头函数，可能出现上下文this
+
+    changeIndex: throttle(function (index) {
+      //index:鼠标移上某一个一级分类的元素的索引值
+      //正常情况(用户慢慢的操作)：鼠标进入，每一个一级分类h3，都会触发鼠标进入事件
+      //非正常情况(用户操作很快) ：本身全部的一级分类都应该触发鼠标进入事件，但是经过测试，只有部分h3触发了
+      //就是由于用户行为过快，导致浏览器反应不过来。如果当前回调函数中有一些大量业务，有可能出现卡顿现象
+
       //index:鼠标移上某一个一级分类的元素的索引值
       this.currentIndex = index;
-    },
+    }, 50),
     //一级分类鼠标移出的事件回调
     leaveIndex() {
       //鼠标移出currentIndex,变为-1；
@@ -132,7 +149,7 @@ export default {
       height: 461px;
       position: absolute;
       background: #fafafa;
-      z-: 999;
+      z-index: 999;
 
       .all-sort-list2 {
         .item {
@@ -158,7 +175,7 @@ export default {
             left: 210px;
             border: 1px solid #ddd;
             top: 0;
-            z-: 9999 !important;
+            z-index: 9999 !important;
 
             .subitem {
               float: left;
@@ -203,11 +220,11 @@ export default {
             }
           }
 
-          &:hover {
-            .item-list {
-              display: block;
-            }
-          }
+          //   &:hover {
+          //     .item-list {
+          //       display: block;
+          //     }
+          //   }
         }
         .cur {
           background: skyblue;
