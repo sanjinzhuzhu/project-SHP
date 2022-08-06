@@ -39,7 +39,7 @@ export default new VueRouter({
             meta: { show: true }
         },
         {
-            path: "/search/:keyword",//对应面试题3，可以去掉path就没有问题
+            path: "/search",//对应面试题3，可以去掉path就没有问题 path: "/search",/:keyword
             component: Search,
             meta: { show: true },
             name: "search",
