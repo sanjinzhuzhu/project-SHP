@@ -74,26 +74,38 @@ export default {
       //   this.$router.push(`/search/${this.keyword}?k=${this.keyword.toUpperCase()}`)
       //3.对象
       //   this.$router.push({name:"search",params:{keyword:this.keyword},query:{k:this.keyword.toUpperCase()}})
-      
 
       //面试题
       //1、路由传递参数(对象写法)path是否可以结合params参数一起使用？
       //答：不能 对象的写法可以是name、path形式  params参数和name一起使用
       //   this.$router.push({path:'/search', params:{keyword:this.keyword}, query:{k:this.keyword.toUpperCase()}})
-      
+
       //2、如何指定params参数可传可不传？
       //如果路由要求传递params参数，但是你就不传递params参数，那么URL会有问题
       //   this.$router.push({name:'search',query:{k:this.keyword.toUpperCase()}})
       //解决方法；可以在配置路由的时候，在占位的后面加上一个问号【params可以传或不传
-    
+
       //3、params参数可传递页可以不传递，如果传递是空串，如何解决？
       //使用undefined解决
-      //this.$router.push({name:'search',params:{keyword:''||undefined},query:{k:this.keyword.toUpperCase()}});
-      
+
       //4、路由组件能不能传递props数据
       //可以的 有三种写法
-     this.$router.push({name:"search",params:{keyword:this.keyword},query:{k:this.keyword.toUpperCase()}},()=>{},()=>{});
-     console.log(this.$router);
+       this.$router.push({name:"search",params:{keyword:this.keyword},query:{k:this.keyword}},()=>{},()=>{});
+
+      //console.log(this.$router);
+    //  if (this.$route.query) {
+    //    let location = {
+    //      name: "search",
+    //      params: { keyword: this.keyword || undefined },
+    //    };
+    //    location.query = this.$route.query;
+       
+    //   if (this.$route.path != "/home") {
+    //     this.$router.replace(location);
+    //   } else {
+    //     this.$router.push(location);
+       
+      
     },
   },
 };
@@ -109,7 +121,7 @@ export default {
     .container {
       width: 1200px;
       margin: 0 auto;
-      overflow: hidden;
+      //overflow: hidden;
 
       .loginList {
         float: left;

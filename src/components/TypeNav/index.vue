@@ -94,7 +94,7 @@ export default {
   //组件挂载完毕：可以向服务器发请求
   mounted() {
     // //通知Vuex发请求，获取数据，存储于仓库中 派发action
-    // this.$store.dispatch("categoryList"); 移到app根组件里进行挂载了
+    // this.$store.dispatch("getCategoryList"); 移到app根组件里进行挂载了
     //当组件挂在完毕，让show属性变为false
     //如果不是Home路由组件，讲typeNav进行隐藏
     if (this.$route.path != "/home") {
@@ -154,10 +154,14 @@ export default {
         } else {
           query.category3Id = category3id;
         }
-        //整理参数 因为location和query现在是两个对象 所以要进行合并
-        location.query = query;
-        //路由跳转
-        this.$router.push(location);
+        //判断:如果路由跳转的时候，带有params参数，也需要一并传递过去
+        if (this.$route.params) {
+          location.params = this.$route.params;
+          //整理参数 因为location和query现在是两个对象 所以要进行合并
+          location.query = query;
+          //路由跳转
+          this.$router.push(location);
+        }
       }
       //
     },
@@ -301,18 +305,17 @@ export default {
     }
     //过渡动画样式
     //过渡动画开始状态(进入)
-    .sort-enter{
-        height: 0px;
+    .sort-enter {
+      height: 0px;
     }
     //过渡动画结束状态(进入)
-    .sort-enter-to{
-        overflow: hidden;
-        height: 461px;
-       
+    .sort-enter-to {
+      overflow: hidden;
+      height: 461px;
     }
     //定义动画时间、速率
-    .sort-enter-active{
-        transition: all .5s linear;
+    .sort-enter-active {
+      transition: all 0.5s linear;
     }
   }
 }
