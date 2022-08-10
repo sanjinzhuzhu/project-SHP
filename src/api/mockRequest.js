@@ -4,9 +4,6 @@ import axios from "axios";
 import nprogress from "nprogress";
 //引入进度条样式
 import "nprogress/nprogress.css";
-//引入vuex仓库模块
-// import store from '@/store'
-
 //start:进度条开始  done: 进度条结束
 
 //1.利用axios对象方法create，去创建一个axios实例
@@ -15,7 +12,7 @@ import "nprogress/nprogress.css";
 const requests = axios.create({
     //配置对象
     //基础路径，发送请求的时候，路径当中会出现api
-    baseURL: "/api",
+    baseURL: "http://localhost:8080/mock",
     //代表请求超时的时间5s
     timeout: 5000,
 });

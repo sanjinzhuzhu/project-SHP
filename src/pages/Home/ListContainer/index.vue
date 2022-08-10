@@ -100,8 +100,20 @@
 </template>
 
 <script>
+//vuex辅助函数，让组件获取仓库的数据
+import { mapState } from "vuex";
 export default {
   name: "",
+  mounted(){
+    //派发action:通过Vuex发起ajax请求，将数据存在仓库当中
+    this.$store.dispatch('getBannerList');
+  },
+  //计算属性
+  computed: {
+    ...mapState({
+      bannerList: state => state.home.bannerList,
+    }),
+  },
 };
 </script>
 
