@@ -6,8 +6,12 @@
         <h3 class="fl">{{ list.name }}</h3>
         <div class="fr">
           <ul class="nav-tabs clearfix">
-            <li class="active" v-for="(nav,index) in list.navList" :key="index">
-              <a href="#tab1" data-toggle="tab">{{nav.text}}</a>
+            <li
+              class="active"
+              v-for="(nav, index) in list.navList"
+              :key="index"
+            >
+              <a href="#tab1" data-toggle="tab">{{ nav.text }}</a>
             </li>
             <!-- <li>
               <a href="#tab2" data-toggle="tab">大家电</a>
@@ -48,31 +52,32 @@
               <img :src="list.imgUrl" />
             </div>
             <div class="floorBanner">
-              <!-- 轮播图的地方 -->
-              <div class="swiper-container" ref="floor1Swiper">
+              <!-- 轮播图的地方 轮播图封装-->
+              <Carousel :list="list.carouselList"/>
+            <!-- <div class="swiper-container" ref="floor1Swiper">
                 <div class="swiper-wrapper">
                   <div
                     class="swiper-slide"
                     v-for="carousel in list.carouselList"
                     :key="carousel.id"
                   >
-                    <img :src="carousel.imgUrl" />
+                    <img :src="carousel.imgUrl" /> -->
                     <!-- <img src="./images/floor-1-b01.png"> -->
-                  </div>
+                  <!-- </div> -->
                   <!-- <div class="swiper-slide">
-                                            <img src="./images/floor-1-b02.png">
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <img src="./images/floor-1-b03.png">
-                                        </div> -->
-                </div>
+                    <img src="./images/floor-1-b02.png" />
+                  </div>
+                  <div class="swiper-slide">
+                    <img src="./images/floor-1-b03.png" />
+                  </div> -->
+                <!-- </div> -->
                 <!-- 如果需要分页器 -->
-                <div class="swiper-pagination"></div>
+                <!-- <div class="swiper-pagination"></div> -->
 
                 <!-- 如果需要导航按钮 -->
-                <div class="swiper-button-prev"></div>
+                <!-- <div class="swiper-button-prev"></div>
                 <div class="swiper-button-next"></div>
-              </div>
+              </div> -->
             </div>
             <div class="split">
               <span class="floor-x-line"></span>
@@ -103,31 +108,61 @@
 </template>
 
 <script>
-//引入Swiper
-import Swiper from "swiper";
+//引入Swiper 
+// import Swiper from "swiper";
 export default {
   name: "",
   props: ["list"],
   //组件挂载完毕的地方 ，因为结构不是在floor组件请求的，是父组件传过来的，所以结构已经有了，就可以直接写在mounted这里
   mounted() {
-    var mySwiper = new Swiper(
-      this.$refs.floor1Swiper,
-      //document.querySelector(".swiper-container"),vue中最好不要用dom来操作元素
-      {
-        loop: true,
-        //分页器
-        pagination: {
-          el: ".swiper-pagination",
-          //点击小球的时候切换图片
-          clickable: true,
-        },
-        navigation: {
-          nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev",
-        },
-      }
-    );
+    // var mySwiper = new Swiper(
+    //   this.$refs.floor1Swiper,
+    //   //document.querySelector(".swiper-container"),vue中最好不要用dom来操作元素
+    //   {
+    //     loop: true,
+    //     //分页器
+    //     pagination: {
+    //       el: ".swiper-pagination",
+    //       //点击小球的时候切换图片
+    //       clickable: true,
+    //     },
+    //     navigation: {
+    //       nextEl: ".swiper-button-next",
+    //       prevEl: ".swiper-button-prev",
+    //     },
+    //   }
+    // );
   },
+  //轮播图封装
+//   watch: {
+//     list: {
+//       //立即监听,不管数据有没有变化，上来就立即监听一次
+//       //为什么监听不到list：因为数据没有发生变化(数据是父亲给的，里面的数据是一个对象，该有的都有)
+//       immediate: true,
+//       handler() {
+//         //只能监听到数据已经有了，但是v-for动态渲染结构还是没有办法确定，因此还是需要nextTick
+//         this.$nextTick(() => {
+//           var mySwiper = new Swiper(
+//             this.$refs.floor1Swiper,
+//             //document.querySelector(".swiper-container"),vue中最好不要用dom来操作元素
+//             {
+//               loop: true,
+//               //分页器
+//               pagination: {
+//                 el: ".swiper-pagination",
+//                 //点击小球的时候切换图片
+//                 clickable: true,
+//               },
+//               navigation: {
+//                 nextEl: ".swiper-button-next",
+//                 prevEl: ".swiper-button-prev",
+//               },
+//             }
+//           );
+//         });
+//       },
+//     },
+//   },
 };
 </script>
 

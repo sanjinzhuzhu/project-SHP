@@ -2,17 +2,18 @@
   <div class="list-container">
     <div class="sortList clearfix">
       <div class="center">
-        <!--banner轮播-->
-        <div class="swiper-container" ref="mySwiper">
+        <!--banner轮播 轮播图封装-->
+        <Carousel :list="bannerList"/>
+        <!-- <div class="swiper-container" ref="mySwiper">
           <div class="swiper-wrapper">
             <div
               class="swiper-slide"
               v-for="carousel in bannerList"
               :key="carousel.id"
-            >
+            > -->
               <!-- <img src="./images/banner1.jpg" /> -->
-              <img :src="carousel.imgUrl" />
-            </div>
+              <!-- <img :src="carousel.imgUrl" />
+            </div> -->
             <!-- <div class="swiper-slide">
               <img src="./images/banner2.jpg" />
             </div>
@@ -22,14 +23,14 @@
             <div class="swiper-slide">
               <img src="./images/banner4.jpg" />
             </div> -->
-          </div>
+          <!-- </div> -->
           <!-- 如果需要分页器 -->
-          <div class="swiper-pagination"></div>
+          <!-- <div class="swiper-pagination"></div> -->
 
           <!-- 如果需要导航按钮 -->
-          <div class="swiper-button-prev"></div>
+          <!-- <div class="swiper-button-prev"></div>
           <div class="swiper-button-next"></div>
-        </div>
+        </div> -->
       </div>
       <div class="right">
         <div class="news">
@@ -107,8 +108,8 @@
 <script>
 //vuex辅助函数，让组件获取仓库的数据
 import { mapState } from "vuex";
-//引包
-import Swiper from "swiper";
+//引包 轮播图封装
+//import Swiper from "swiper";
 export default {
   name: "",
   mounted() {
@@ -140,35 +141,36 @@ export default {
     }),
   },
   //监听bannerList数据变化：因为这条数据发生变化--由空数组变为数组里面有四个元素
-  watch: {
-    bannerList: {
-      handler(newValue, oldValue) {
-        //如果执行handler方法，代表组件实例身上这个属性的属性已经有了【数组：四个元素】
-        //当这个函数执行：只能保证bannerList数据已经有了，但是你没有办法保证v-for已经执行结束
-        //nextTick:等待下一次 DOM 更新刷新的工具方法。
-        this.$nextTick(() => {
-          //当执行这个回调的时候，保证服务器数据回来了，v-for执行完，轮播图的结构一定有，在执行回调
-          var mySwiper = new Swiper(
-            this.$refs.mySwiper,
-            //document.querySelector(".swiper-container"),vue中最好不要用dom来操作元素
-            {
-              loop: true,
-              //分页器
-              pagination: {
-                el: ".swiper-pagination",
-                //点击小球的时候切换图片
-                clickable: true,
-              },
-              navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-              },
-            }
-          );
-        });
-      },
-    },
-  },
+//  watch: { 轮播图封装 
+//     bannerList: {
+//         immediate: true,
+//       handler(newValue, oldValue) {
+//         //如果执行handler方法，代表组件实例身上这个属性的属性已经有了【数组：四个元素】
+//         //当这个函数执行：只能保证bannerList数据已经有了，但是你没有办法保证v-for已经执行结束
+//         //nextTick:等待下一次 DOM 更新刷新的工具方法。
+//         this.$nextTick(() => {
+//           //当执行这个回调的时候，保证服务器数据回来了，v-for执行完，轮播图的结构一定有，在执行回调
+//           var mySwiper = new Swiper(
+//             this.$refs.mySwiper,
+//             //document.querySelector(".swiper-container"),vue中最好不要用dom来操作元素
+//             {
+//               loop: true,
+//               //分页器
+//               pagination: {
+//                 el: ".swiper-pagination",
+//                 //点击小球的时候切换图片
+//                 clickable: true,
+//               },
+//               navigation: {
+//                 nextEl: ".swiper-button-next",
+//                 prevEl: ".swiper-button-prev",
+//               },
+//             }
+//           );
+//         });
+//       },
+//     },
+//   },
 };
 </script>
 
