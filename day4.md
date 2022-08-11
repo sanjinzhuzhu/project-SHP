@@ -22,3 +22,5 @@ mock npm i mockjs
 4）开始mock，创建mockServe.js通过mockjs插件模块来实现
 5)mockServe.js文件在入口文件中引入(至少需要执行一次，才能模拟数据)
 
+5)LsitContainer组件开发重点
+安装Swiper插件:安装的是swiper@5 npm i swiper@5

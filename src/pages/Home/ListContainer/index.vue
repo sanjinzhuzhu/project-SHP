@@ -5,8 +5,13 @@
         <!--banner轮播-->
         <div class="swiper-container" id="mySwiper">
           <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <img src="./images/banner1.jpg" />
+            <div
+              class="swiper-slide"
+              v-for="carousel in bannerList"
+              :key="carousel.id"
+            >
+              <!-- <img src="./images/banner1.jpg" /> -->
+              <img :src="carousel.imgUrl" />
             </div>
             <!-- <div class="swiper-slide">
               <img src="./images/banner2.jpg" />
@@ -102,16 +107,36 @@
 <script>
 //vuex辅助函数，让组件获取仓库的数据
 import { mapState } from "vuex";
+//引包
+import Swiper from "swiper"
 export default {
   name: "",
-  mounted(){
+  mounted() {
     //派发action:通过Vuex发起ajax请求，将数据存在仓库当中
-    this.$store.dispatch('getBannerList');
+    this.$store.dispatch("getBannerList");
+    setTimeout(() => {
+    var mySwiper = new Swiper(document.querySelector(".swiper-container"),{
+        loop:true,
+        //分页器
+        pagination: {
+            el:".swiper-pagination",
+            //点击小球的时候切换图片
+            clickable:true
+        },
+        navigation: {
+            nextEl:'.swiper-button-next',
+            prevEl:'.swiper-button-prev',
+        },
+    })
+  }, 2000);
   },
+  //因为new swpier实例之前，页面结构必须的有【现在把new swiper放在mounted这里不行】
+  //因为dispath当中设涉及到异步语句，导致v-for遍历的时候结构还没有完全所以，可以加个定时器
+  
   //计算属性
   computed: {
     ...mapState({
-      bannerList: state => state.home.bannerList,
+      bannerList: (state) => state.home.bannerList,
     }),
   },
 };

@@ -7,6 +7,9 @@ Vue.component(TypeNav.name,TypeNav);
 
 //引入MockServer.js---mock数据
 import '@/mock/mockServe';
+//引入swiper样式
+import "swiper/css/swiper.min.css";
+
 //引入路由
 import router from '@/router';
 //引入仓库
