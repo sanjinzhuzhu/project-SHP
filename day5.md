@@ -12,3 +12,17 @@ swiper插件：经常制作轮播图(移动端｜pc端也可以使用)
 5）mock数据，通过mock.js模块实现的
 
 一、用最完美的方案解决轮播图的问题
+watch + nextTick : 数据监听： 监听已有数据变化 
+$nextTick: 在下次DOM更新 循环结束之后v-for  执行延迟回调。在修改数据之后
+$nextTick: 可以保证页面中的结构一定是有的 经常和很多插件一起使用【都需要DOM存在】
+
+二）开发floor组件
+切记:
+1、仓库当中的state的数据格式不能乱写，数据格式取决于服务器返回的数据
+2、getFloorlist这个action在哪里触发，是需要在Home路由组件中触发的，不要在floor组件内部触发action，不然后面无法v-for遍历floor组件，
+3、组件通信的方式有哪些？
+props:用于父子组件通信
+自定义时间：@on @emit 可以实现子给父通信
+pubsub-js:vue 当中几乎不要 全能
+插槽
+vuex

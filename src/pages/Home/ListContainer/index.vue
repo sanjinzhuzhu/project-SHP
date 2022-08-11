@@ -3,7 +3,7 @@
     <div class="sortList clearfix">
       <div class="center">
         <!--banner轮播-->
-        <div class="swiper-container" id="mySwiper">
+        <div class="swiper-container" ref="mySwiper">
           <div class="swiper-wrapper">
             <div
               class="swiper-slide"
@@ -108,36 +108,66 @@
 //vuex辅助函数，让组件获取仓库的数据
 import { mapState } from "vuex";
 //引包
-import Swiper from "swiper"
+import Swiper from "swiper";
 export default {
   name: "",
   mounted() {
     //派发action:通过Vuex发起ajax请求，将数据存在仓库当中
     this.$store.dispatch("getBannerList");
-    setTimeout(() => {
-    var mySwiper = new Swiper(document.querySelector(".swiper-container"),{
-        loop:true,
-        //分页器
-        pagination: {
-            el:".swiper-pagination",
-            //点击小球的时候切换图片
-            clickable:true
-        },
-        navigation: {
-            nextEl:'.swiper-button-next',
-            prevEl:'.swiper-button-prev',
-        },
-    })
-  }, 2000);
+    //     setTimeout(() => {
+    //     var mySwiper = new Swiper(document.querySelector(".swiper-container"),{
+    //         loop:true,
+    //         //分页器
+    //         pagination: {
+    //             el:".swiper-pagination",
+    //             //点击小球的时候切换图片
+    //             clickable:true
+    //         },
+    //         navigation: {
+    //             nextEl:'.swiper-button-next',
+    //             prevEl:'.swiper-button-prev',
+    //         },
+    //     })
+    //   }, 2000);
   },
   //因为new swpier实例之前，页面结构必须的有【现在把new swiper放在mounted这里不行】
   //因为dispath当中设涉及到异步语句，导致v-for遍历的时候结构还没有完全所以，可以加个定时器
-  
+
   //计算属性
   computed: {
     ...mapState({
       bannerList: (state) => state.home.bannerList,
     }),
+  },
+  //监听bannerList数据变化：因为这条数据发生变化--由空数组变为数组里面有四个元素
+  watch: {
+    bannerList: {
+      handler(newValue, oldValue) {
+        //如果执行handler方法，代表组件实例身上这个属性的属性已经有了【数组：四个元素】
+        //当这个函数执行：只能保证bannerList数据已经有了，但是你没有办法保证v-for已经执行结束
+        //nextTick:等待下一次 DOM 更新刷新的工具方法。
+        this.$nextTick(() => {
+          //当执行这个回调的时候，保证服务器数据回来了，v-for执行完，轮播图的结构一定有，在执行回调
+          var mySwiper = new Swiper(
+            this.$refs.mySwiper,
+            //document.querySelector(".swiper-container"),vue中最好不要用dom来操作元素
+            {
+              loop: true,
+              //分页器
+              pagination: {
+                el: ".swiper-pagination",
+                //点击小球的时候切换图片
+                clickable: true,
+              },
+              navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+              },
+            }
+          );
+        });
+      },
+    },
   },
 };
 </script>

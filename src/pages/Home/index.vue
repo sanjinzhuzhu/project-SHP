@@ -6,8 +6,8 @@
     <Recommend/>
     <Rank/>
     <Like/>
-    <Floor/>
-    <Floor/>
+    <Floor v-for="floor in floorList" :key="floor.id" :list="floor"/>
+    <!-- <Floor/> -->
     <Brand/>
     <!-- <button @click="add">点击我加上1</button>
     <span>仓库的数据{{count}}</span>
@@ -23,6 +23,7 @@ import Rank from '@/pages/Home/Rank';
 import Like from '@/pages/Home/Like';
 import Floor from '@/pages/Home/Floor';
 import Brand from '@/pages/Home/Brand';
+import { mapState } from 'vuex';
 
 // import { mapState } from 'vuex';
 export default {
@@ -44,6 +45,15 @@ export default {
     //     this.$store.dispatch('add')
     //   }  
     // }
+  mounted(){
+    //派发action，获取floot组件的数据
+    this.$store.dispatch('getFloorList')
+  },
+  computed:{
+    ...mapState({
+      floorList:state=> state.home.floorList
+    })
+  }
 };
 </script>
 
