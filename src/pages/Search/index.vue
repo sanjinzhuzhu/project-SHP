@@ -12,10 +12,16 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x">手机</li>
-            <li class="with-x">iphone<i>×</i></li>
-            <li class="with-x">华为<i>×</i></li>
-            <li class="with-x">OPPO<i>×</i></li>
+            <!-- 分类的面包屑 -->
+            <li class="with-x" v-if="searchParams.categoryName">
+              {{ searchParams.categoryName
+              }}<i @click="removeCategoryName">x</i>
+            </li>
+            <!-- 关键字的面包屑 -->
+             <li class="with-x" v-if="searchParams.keyword">
+              {{ searchParams.keyword
+              }}<i @click="removeKeyword">x</i>
+            </li>
           </ul>
         </div>
 
@@ -475,7 +481,6 @@ export default {
   data() {
     return {
       //带给服务器
-
       searchParams: {
         category1Id: "",
         category2Id: "",
@@ -489,9 +494,12 @@ export default {
         trademark: "",
       },
     };
-  }, 
+  },
+  //在挂载千调用一次 可以在发请求之前将带有参数进行修改
   //Object.assign:ES6新增语法，合并对象
   beforeMount() {
+    //在发请求之前，把接口需要传递参数，进行整理(在给服务器发请求之前，把参数整理好，服务器就会返回查询的数据)
+    //也可以选择created 这里选择的beforeMount
     Object.assign(this.searchParams, this.$route.query, this.$route.params);
   },
   mounted() {
@@ -500,17 +508,64 @@ export default {
     // this.$store.dispatch('getSearchList',{});
     this.getData();
   },
-  computed: {
-    //项目中getters主要作用是简化数据
-    //mapGetters里面的写法：传递的数组，因为getters计算是没有划分模块【home，search】
-    ...mapGetters(["goodlist"]),
-  },
   methods: {
     //向服务器发请求获取search模块数据(根据参数不同返回不同的数据进行展示)
     //把这次请求封装为一个函数，当你需要在调研的时候调用
     getData() {
       //先测试接口返回的数据格式
       this.$store.dispatch("getSearchList", this.searchParams);
+    },
+    //删除面包屑：分类名字
+    removeCategoryName() {
+      //把服务器的参数置空，需要再次向服务器发请求
+      //带给服务器的参数说明可有可无的；如果树枝为空的字符串还是会把相应的字段带给服务器
+      //但是把相应的字段变为undefined，当前这个字段不会带给服务器
+      this.searchParams.categoryName =  undefined;
+      this.searchParams.category1Id = undefined;
+      this.searchParams.category2Id = undefined;
+      this.searchParams.category3Id = undefined;
+      this.getData();
+      //地址栏也需要改，进行路由跳转
+      //this.$router.push({name:'search'});不严谨，有params参数因为带上
+      if (this.$toute.params) {
+        this.$router.push({ name: "search", params: this.$route.params });
+      }
+    },
+    //删除关键字
+    removeKeyword(){
+      //给服务器带的参数searchParams的keyword置空
+      this.searchParams.keyword = undefined;
+      //再次发送请求 
+      this.getData();
+      this.$bus.$emit("clear");
+      //进行路由的跳转
+      if(this.$route.query){
+        this.$touter.push({name:"search",query:this.$toute.query});
+      }
+    }
+  },
+  computed: {
+    //项目中getters主要作用是简化数据
+    //mapGetters里面的写法：传递的数组，因为getters计算是没有划分模块【home，search】
+    ...mapGetters(["goodlist"]),
+  },
+  //前面search中因为是在mounted中挂载的，所以只能search一次，
+  //现在想要实现多次，可以watch监听路由变化
+  //数据监听:监听组件实例身上的属性数值变化
+  watch: {
+    //监听属性 监听路由是否发生变化，如果发生变化，再次发起请求
+    $route(newValue, oldValue) {
+      //再次发请求之前整理带给服务器参数
+      Object.assign(this.searchParams, this.$route.query, this.$route.params);
+      //再次发起ajax请求
+      this.getData();
+      //console.log(this.searchParams);
+
+      //每一次请求完毕，应该把1、2、3级分类的id清空，
+      //让他接受下一次的相应1、2、3id
+      this.searchParams.category1Id =  undefined;
+      this.searchParams.category2Id =  undefined;
+      this.searchParams.category3Id =  undefined;
     },
   },
 };

@@ -23,6 +23,10 @@ import {reqCategoryList} from '@/api';
 reqCategoryList();
 new Vue({
   render: h => h(App),
+  // 全局事件总线注册
+  beforeCreate(){
+    Vue.prototype.$bus = this;
+  },
   //注册路由：底下的写法KV一致省略V【router小写的】
   router,
   //注册仓库:组件实例的身上会多一个属性$store属性

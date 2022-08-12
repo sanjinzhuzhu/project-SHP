@@ -90,23 +90,35 @@ export default {
 
       //4、路由组件能不能传递props数据
       //可以的 有三种写法
-       this.$router.push({name:"search",params:{keyword:this.keyword},query:{k:this.keyword}},()=>{},()=>{});
+      this.$router.push(
+        {
+          name: "search",
+          params: { keyword: this.keyword },
+          query: { k: this.keyword },
+        },
+        () => {},
+        () => {}
+      );
 
       //console.log(this.$router);
-    //  if (this.$route.query) {
-    //    let location = {
-    //      name: "search",
-    //      params: { keyword: this.keyword || undefined },
-    //    };
-    //    location.query = this.$route.query;
-       
-    //   if (this.$route.path != "/home") {
-    //     this.$router.replace(location);
-    //   } else {
-    //     this.$router.push(location);
-       
-      
+      //  if (this.$route.query) {
+      //    let location = {
+      //      name: "search",
+      //      params: { keyword: this.keyword || undefined },
+      //    };
+      //    location.query = this.$route.query;
+
+      //   if (this.$route.path != "/home") {
+      //     this.$router.replace(location);
+      //   } else {
+      //     this.$router.push(location);
     },
+  },
+  mounted() {
+    // 通过全局事件总线清除关键字  接受
+    this.$bus.$on("clear", () => {
+      this.keyword = "";
+    });
   },
 };
 </script>
