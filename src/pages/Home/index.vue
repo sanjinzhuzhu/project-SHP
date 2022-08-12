@@ -6,6 +6,7 @@
     <Recommend/>
     <Rank/>
     <Like/>
+    <!-- floor 这个组件:自己在组件是没有发请求的，数据是父组件给的 -->
     <Floor v-for="floor in floorList" :key="floor.id" :list="floor"/>
     <!-- <Floor/> -->
     <Brand/>
@@ -45,6 +46,7 @@ export default {
     //     this.$store.dispatch('add')
     //   }  
     // }
+    // 因为floor有两个一样的，不好在floor组件内遍历，组件数据在home父组件挂载传给子组件
   mounted(){
     //派发action，获取floot组件的数据
     this.$store.dispatch('getFloorList')

@@ -15,11 +15,12 @@ Vue.component(Carousel.name,Carousel);
 import '@/mock/mockServe';
 //引入swiper样式
 import "swiper/css/swiper.min.css";
-
+import {reqGetSearchInfo} from '@/api';
+console.log(reqGetSearchInfo({}));
 
 // //测试
-// import {reqCategoryList} from '@/api';
-// reqCategoryList();
+import {reqCategoryList} from '@/api';
+reqCategoryList();
 new Vue({
   render: h => h(App),
   //注册路由：底下的写法KV一致省略V【router小写的】
