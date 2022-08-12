@@ -52,17 +52,17 @@
           <!-- 销售的产品列表 -->
           <div class="goods-list">
             <ul class="yui3-g">
-              <li class="yui3-u-1-5">
+              <li class="yui3-u-1-5" v-for="good in goodlist" :key="good.id">
                 <div class="list-wrap">
                   <div class="p-img">
                     <a href="item.html" target="_blank"
-                      ><img src="./images/mobile01.png"
+                      ><img :src="good.defaultImg"
                     /></a>
                   </div>
                   <div class="price">
                     <strong>
                       <em>¥</em>
-                      <i>6088.00</i>
+                      <i>{{ good.price }}</i>
                     </strong>
                   </div>
                   <div class="attr">
@@ -70,9 +70,7 @@
                       target="_blank"
                       href="item.html"
                       title="促销信息，下单即赠送三个月CIBN视频会员卡！【小米电视新品4A 58 火爆预约中】"
-                      >Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s
-                      (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s
-                      (A1699)</a
+                      >{{ good.title }}</a
                     >
                   </div>
                   <div class="commit">
@@ -91,7 +89,7 @@
                   </div>
                 </div>
               </li>
-              <li class="yui3-u-1-5">
+              <!-- <li class="yui3-u-1-5">
                 <div class="list-wrap">
                   <div class="p-img">
                     <img src="./images/mobile02.png" />
@@ -423,7 +421,7 @@
                     >
                   </div>
                 </div>
-              </li>
+              </li> -->
             </ul>
           </div>
           <!-- 分页器 -->
@@ -464,16 +462,57 @@
 
 <script>
 import SearchSelector from "./SearchSelector/SearchSelector";
+import { mapGetters } from "vuex";
+
+//import {mapState} from 'vuex';
 export default {
   name: "Search",
 
   components: {
     SearchSelector,
   },
-  mounted(){
-    //先测试接口返回的数据格式
-    this.$store.dispatch('getSearchList',{});
-  }
+  //定一个一个响应式的数据，发生变化 并且可以监听到
+  data() {
+    return {
+      //带给服务器
+
+      searchParams: {
+        category1Id: "",
+        category2Id: "",
+        category3Id: "",
+        categoryName: "",
+        keyword: "",
+        order: "",
+        pageNo: 1,
+        pageSize: 3,
+        props: [""],
+        trademark: "",
+      },
+    };
+  }, 
+  //Object.assign:ES6新增语法，合并对象
+  beforeMount() {
+    Object.assign(this.searchParams, this.$route.query, this.$route.params);
+  },
+  mounted() {
+    // //先测试接口返回的数据格式 {这里不建议放在mounted，因为只能获取一次，
+    //所以可以定义一个方法函数，获取数据，根据数据的不同返回结果进行展示}
+    // this.$store.dispatch('getSearchList',{});
+    this.getData();
+  },
+  computed: {
+    //项目中getters主要作用是简化数据
+    //mapGetters里面的写法：传递的数组，因为getters计算是没有划分模块【home，search】
+    ...mapGetters(["goodlist"]),
+  },
+  methods: {
+    //向服务器发请求获取search模块数据(根据参数不同返回不同的数据进行展示)
+    //把这次请求封装为一个函数，当你需要在调研的时候调用
+    getData() {
+      //先测试接口返回的数据格式
+      this.$store.dispatch("getSearchList", this.searchParams);
+    },
+  },
 };
 </script>
 
