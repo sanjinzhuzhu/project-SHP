@@ -22,11 +22,15 @@
               {{ searchParams.keyword
               }}<i @click="removeKeyword">x</i>
             </li>
+             <li class="with-x" v-if="searchParams.trademark">
+              {{ searchParams.trademark.split(":")[1]
+              }}<i @click="removeTradeMark">x</i>
+            </li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector />
+        <SearchSelector @trademarkInfo="trademarkInfo"/>
 
         <!--details-->
         <div class="details clearfix">
@@ -542,6 +546,22 @@ export default {
       if(this.$route.query){
         this.$touter.push({name:"search",query:this.$toute.query});
       }
+    },
+    //自定义事件回调
+    trademarkInfo(trademark){
+      //整理品牌字段的参数 “ID：品牌名称“
+
+      console.log('我是父组件',trademark);
+      this.searchParams.trademark =`$(trademark.tmId):${trademark.tmName}`;
+      //再次发请求获取search模块列表数据进行展示
+      this.getData();
+    },
+    //删除品牌的信息
+    removeTradeMark(){
+      //将品牌信息置空
+      this.searchParams.trademark = undefined;
+      //再次发送请求
+      this.getData();
     }
   },
   computed: {
