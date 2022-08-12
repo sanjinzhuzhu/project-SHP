@@ -1,4 +1,4 @@
-//从api文件封装的三级联动接口引入(这里接口是老师直接提供的，不知道怎么来的)
+//从api文件封装的三级联动接口引入(这里接口是老师直接提供的
 import { reqCategoryList ,reqGetBannerList,reqFloorList} from "@/api";
 
 //home模块的小仓库
