@@ -442,7 +442,7 @@
               </li> -->
             </ul>
           </div>
-          <Pagination/>
+          <Pagination :pageNo="searchParams.pageNo" :pageSize="searchParams.pageSize" :total="total" :continues="5" @getPageNo="getPageNo"/>
           <!-- 分页器 由于很多地方用到了 就拿出去封装为一个全局组件-->
           <!-- <div class="fr page">
             <div class="sui-pagination clearfix">
@@ -481,7 +481,7 @@
 
 <script>
 import SearchSelector from "./SearchSelector/SearchSelector";
-import { mapGetters } from "vuex";
+import { mapGetters ,mapState} from "vuex";
 
 //import {mapState} from 'vuex';
 export default {
@@ -619,6 +619,13 @@ export default {
       //再次发请求
       this.getData();
     },
+    //获取当前第几页
+    getPageNo(pageNo){
+    //整理带给服务器参数
+    this.searchParams.pageNo = pageNo;
+    //再次发请求
+    this.getData();
+    }
   },
   computed: {
     //项目中getters主要作用是简化数据
@@ -636,6 +643,10 @@ export default {
     isDesc() {
       return this.searchParams.order.indexOf('desc') != -1;
     },
+    //
+    ...mapState({
+      total:state=>state.search.searchList.total
+    })
   },
   //前面search中因为是在mounted中挂载的，所以只能search一次，
   //现在想要实现多次，可以watch监听路由变化
