@@ -44,25 +44,25 @@
         <div class="details clearfix">
           <div class="sui-navbar">
             <div class="navbar-inner filter">
-              <!-- 价格结构 -->
+              <!-- 排序的结构 -->
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li :class="{ active: isOne }" @click="changeOrder('1')">
+                  <a
+                    >综合<span
+                      v-show="isOne"
+                      class="iconfont"
+                      :class="{ 'icon-up': isAsc, 'icon-down': isDesc }"
+                    ></span
+                  ></a>
                 </li>
-                <li>
-                  <a href="#">销量</a>
-                </li>
-                <li>
-                  <a href="#">新品</a>
-                </li>
-                <li>
-                  <a href="#">评价</a>
-                </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <li :class="{ active: isTwo }" @click="changeOrder('2')">
+                  <a
+                    >价格<span
+                      v-show="isTwo"
+                      class="iconfont"
+                      :class="{ 'icon-up': isAsc, 'icon-down': isDesc }"
+                    ></span
+                  ></a>
                 </li>
               </ul>
             </div>
@@ -442,8 +442,9 @@
               </li> -->
             </ul>
           </div>
-          <!-- 分页器 -->
-          <div class="fr page">
+          <Pagination/>
+          <!-- 分页器 由于很多地方用到了 就拿出去封装为一个全局组件-->
+          <!-- <div class="fr page">
             <div class="sui-pagination clearfix">
               <ul>
                 <li class="prev disabled">
@@ -471,7 +472,7 @@
               </ul>
               <div><span>共10页&nbsp;</span></div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -494,12 +495,16 @@ export default {
     return {
       //带给服务器
       searchParams: {
+        //产品相应的id
         category1Id: "",
         category2Id: "",
         category3Id: "",
+        //产品的名字
         categoryName: "",
+        //产品的关键字
         keyword: "",
-        order: "",
+        //排序:初始状态应该是综合降序
+        order: "1:desc",
         pageNo: 1,
         pageSize: 3,
         props: [""],
@@ -593,11 +598,44 @@ export default {
       //再次发请求
       this.getData();
     },
+    //排序的操作
+    changeOrder(flag) {
+      //flag形参:它是一个标记，代表用户点击的是综合(1)价格(2)【用户点击的时候传递过来的】
+      let originOrder = this.searchParams.order;
+    //这里获取到的是最开始的状态
+      let originFlag = this.searchParams.order.split(":")[0];
+      let originSort = this.searchParams.order.split(":")[1];
+    //   // //准备一个新的order属性值
+      let newOrder = '';
+    //   // //这个语句一定是综合
+      if (flag == originFlag) {
+        newOrder = `${originFlag}:${originSort == "desc" ? "asc" : "desc"}`;
+      } else {
+        //点击的是价格
+        newOrder = `${flag}:${"desc"}`;
+      }
+      //将新的order赋予searchParams
+      this.searchParams.order = newOrder;
+      //再次发请求
+      this.getData();
+    },
   },
   computed: {
     //项目中getters主要作用是简化数据
     //mapGetters里面的写法：传递的数组，因为getters计算是没有划分模块【home，search】
     ...mapGetters(["goodlist"]),
+    isOne() {
+      return this.searchParams.order.indexOf('1') != -1;
+    },
+    isTwo() {
+      return this.searchParams.order.indexOf('2') != -1;
+    },
+    isAsc() {
+      return this.searchParams.order.indexOf('asc') != -1;
+    },
+    isDesc() {
+      return this.searchParams.order.indexOf('desc') != -1;
+    },
   },
   //前面search中因为是在mounted中挂载的，所以只能search一次，
   //现在想要实现多次，可以watch监听路由变化
