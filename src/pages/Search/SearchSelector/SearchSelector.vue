@@ -3,6 +3,7 @@
     <div class="type-wrap logo">
       <div class="fl key brand">品牌</div>
       <div class="value logos">
+        <!-- 品牌地方 -->
         <ul class="logo-list">
           <li
             v-for="trademark in trademarkList"
@@ -18,11 +19,17 @@
         <a href="javascript:void(0);">更多</a>
       </div>
     </div>
+    <!-- 平台售卖属性的地方 -->
     <div class="type-wrap" v-for="attr in attrsList" :key="attr.attrId">
+      <!-- 平台售卖属性: 如价格、种类 -->
       <div class="fl key">{{ attr.attrName }}</div>
       <div class="fl value">
         <ul class="type-list">
-          <li v-for="(attrValue, index) in attr.attrValueList" :key="index">
+          <li
+            v-for="(attrValue, index) in attr.attrValueList"
+            :key="index"
+            @click="attrInfo(attr, attrValue)"
+          >
             <a>{{ attrValue }}</a>
           </li>
         </ul>
@@ -46,8 +53,13 @@ export default {
       //思考 在哪个组件中发请求， 父组件
       //因为父组件中的searchParams参数是带给服务器的参数，子组件把你点击的品牌的信息，需要给父组件传递过去
       //子给父传递  需要自定义一个事件
-     this.$emit('trademarkInfo',trademark)
-    }
+      this.$emit("trademarkInfo", trademark);
+    },
+    // 平台售卖属性值的点击事件 商品属性的数组:["属性ID:属性值:属性名"]
+    attrInfo(attr, attrValue) {
+      // ["属性ID:属性值:属性名"]
+      this.$emit("attrInfo", attr, attrValue);
+    },
   },
 };
 </script>

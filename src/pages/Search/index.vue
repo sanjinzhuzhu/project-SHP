@@ -18,19 +18,27 @@
               }}<i @click="removeCategoryName">x</i>
             </li>
             <!-- 关键字的面包屑 -->
-             <li class="with-x" v-if="searchParams.keyword">
-              {{ searchParams.keyword
-              }}<i @click="removeKeyword">x</i>
+            <li class="with-x" v-if="searchParams.keyword">
+              {{ searchParams.keyword }}<i @click="removeKeyword">x</i>
             </li>
-             <li class="with-x" v-if="searchParams.trademark">
+            <!-- 品牌的面包屑 -->
+            <li class="with-x" v-if="searchParams.trademark">
               {{ searchParams.trademark.split(":")[1]
               }}<i @click="removeTradeMark">x</i>
+            </li>
+            <!-- 平台的售卖属性值展示 - 因为数组元素很多，不想上面的就只有一个词，所以需要用v-for，不能用v-if了-->
+            <li
+              class="with-x"
+              v-for="(attrValue, index) in searchParams.props"
+              :key="index"
+            >
+              {{ attrValue.split(":")[1] }}<i @click="removeAttr(index)">x</i>
             </li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector @trademarkInfo="trademarkInfo"/>
+        <SearchSelector @trademarkInfo="trademarkInfo" @attrInfo="attrInfo" />
 
         <!--details-->
         <div class="details clearfix">
@@ -524,45 +532,67 @@ export default {
       //把服务器的参数置空，需要再次向服务器发请求
       //带给服务器的参数说明可有可无的；如果树枝为空的字符串还是会把相应的字段带给服务器
       //但是把相应的字段变为undefined，当前这个字段不会带给服务器
-      this.searchParams.categoryName =  undefined;
+      this.searchParams.categoryName = undefined;
       this.searchParams.category1Id = undefined;
       this.searchParams.category2Id = undefined;
       this.searchParams.category3Id = undefined;
       this.getData();
       //地址栏也需要改，进行路由跳转
       //this.$router.push({name:'search'});不严谨，有params参数因为带上
-      if (this.$toute.params) {
+      if (this.$route.params) {
         this.$router.push({ name: "search", params: this.$route.params });
       }
     },
     //删除关键字
-    removeKeyword(){
+    removeKeyword() {
       //给服务器带的参数searchParams的keyword置空
       this.searchParams.keyword = undefined;
-      //再次发送请求 
+      //再次发送请求
       this.getData();
       this.$bus.$emit("clear");
       //进行路由的跳转
-      if(this.$route.query){
-        this.$touter.push({name:"search",query:this.$toute.query});
+      if (this.$route.query) {
+        this.$touter.push({ name: "search", query: this.$toute.query });
       }
     },
-    //自定义事件回调
-    trademarkInfo(trademark){
+    //自定义事件回调 【子组件 品牌信息】
+    trademarkInfo(trademark) {
       //整理品牌字段的参数 “ID：品牌名称“
 
-      console.log('我是父组件',trademark);
-      this.searchParams.trademark =`$(trademark.tmId):${trademark.tmName}`;
+      console.log("我是父组件", trademark);
+      this.searchParams.trademark = `$(trademark.tmId):${trademark.tmName}`;
       //再次发请求获取search模块列表数据进行展示
       this.getData();
     },
     //删除品牌的信息
-    removeTradeMark(){
+    removeTradeMark() {
       //将品牌信息置空
       this.searchParams.trademark = undefined;
       //再次发送请求
       this.getData();
-    }
+    },
+    //自定义事件回调（子组件 品牌售卖属性）
+    attrInfo(attr, attrValue) {
+      // ["属性ID:属性值:属性名"]
+      console.log(attr, attrValue);
+      //参数格式整理好
+      let props = `${attr.attrId}:${attrValue}:${attr.attrName}`;
+      //数组去重 if语句里面只有一行代码:可以省略大花括号
+      // if(this.searchParams.props.indexOf(props)==-1){
+      //   this.searchParams.props.push(props);
+      // }
+      if (this.searchParams.props.indexOf(props) == -1)
+        this.searchParams.props.push(props);
+      //再次发送请求
+      this.getData();
+    },
+    //删除售卖属性
+    removeAttr(index) {
+      //再次整楼参数
+      this.searchParams.props.splice(index, 1);
+      //再次发请求
+      this.getData();
+    },
   },
   computed: {
     //项目中getters主要作用是简化数据
@@ -583,9 +613,9 @@ export default {
 
       //每一次请求完毕，应该把1、2、3级分类的id清空，
       //让他接受下一次的相应1、2、3id
-      this.searchParams.category1Id =  undefined;
-      this.searchParams.category2Id =  undefined;
-      this.searchParams.category3Id =  undefined;
+      this.searchParams.category1Id = undefined;
+      this.searchParams.category2Id = undefined;
+      this.searchParams.category3Id = undefined;
     },
   },
 };
