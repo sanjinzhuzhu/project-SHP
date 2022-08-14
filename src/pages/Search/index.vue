@@ -73,9 +73,9 @@
               <li class="yui3-u-1-5" v-for="good in goodlist" :key="good.id">
                 <div class="list-wrap">
                   <div class="p-img">
-                    <a href="item.html" target="_blank"
-                      ><img :src="good.defaultImg"
-                    /></a>
+                    <!-- 在路由跳转的时候切记别忘记带id(params参数) -->
+                    <router-link :to="`/detail/${good.id}`">
+                      <img :src="good.defaultImg"/></router-link>
                   </div>
                   <div class="price">
                     <strong>
@@ -442,7 +442,13 @@
               </li> -->
             </ul>
           </div>
-          <Pagination :pageNo="searchParams.pageNo" :pageSize="searchParams.pageSize" :total="total" :continues="5" @getPageNo="getPageNo"/>
+          <Pagination
+            :pageNo="searchParams.pageNo"
+            :pageSize="searchParams.pageSize"
+            :total="total"
+            :continues="5"
+            @getPageNo="getPageNo"
+          />
           <!-- 分页器 由于很多地方用到了 就拿出去封装为一个全局组件-->
           <!-- <div class="fr page">
             <div class="sui-pagination clearfix">
@@ -481,7 +487,7 @@
 
 <script>
 import SearchSelector from "./SearchSelector/SearchSelector";
-import { mapGetters ,mapState} from "vuex";
+import { mapGetters, mapState } from "vuex";
 
 //import {mapState} from 'vuex';
 export default {
@@ -602,12 +608,12 @@ export default {
     changeOrder(flag) {
       //flag形参:它是一个标记，代表用户点击的是综合(1)价格(2)【用户点击的时候传递过来的】
       let originOrder = this.searchParams.order;
-    //这里获取到的是最开始的状态
+      //这里获取到的是最开始的状态
       let originFlag = this.searchParams.order.split(":")[0];
       let originSort = this.searchParams.order.split(":")[1];
-    //   // //准备一个新的order属性值
-      let newOrder = '';
-    //   // //这个语句一定是综合
+      //   // //准备一个新的order属性值
+      let newOrder = "";
+      //   // //这个语句一定是综合
       if (flag == originFlag) {
         newOrder = `${originFlag}:${originSort == "desc" ? "asc" : "desc"}`;
       } else {
@@ -620,33 +626,33 @@ export default {
       this.getData();
     },
     //获取当前第几页
-    getPageNo(pageNo){
-    //整理带给服务器参数
-    this.searchParams.pageNo = pageNo;
-    //再次发请求
-    this.getData();
-    }
+    getPageNo(pageNo) {
+      //整理带给服务器参数
+      this.searchParams.pageNo = pageNo;
+      //再次发请求
+      this.getData();
+    },
   },
   computed: {
     //项目中getters主要作用是简化数据
     //mapGetters里面的写法：传递的数组，因为getters计算是没有划分模块【home，search】
     ...mapGetters(["goodlist"]),
     isOne() {
-      return this.searchParams.order.indexOf('1') != -1;
+      return this.searchParams.order.indexOf("1") != -1;
     },
     isTwo() {
-      return this.searchParams.order.indexOf('2') != -1;
+      return this.searchParams.order.indexOf("2") != -1;
     },
     isAsc() {
-      return this.searchParams.order.indexOf('asc') != -1;
+      return this.searchParams.order.indexOf("asc") != -1;
     },
     isDesc() {
-      return this.searchParams.order.indexOf('desc') != -1;
+      return this.searchParams.order.indexOf("desc") != -1;
     },
     //
     ...mapState({
-      total:state=>state.search.searchList.total
-    })
+      total: (state) => state.search.searchList.total,
+    }),
   },
   //前面search中因为是在mounted中挂载的，所以只能search一次，
   //现在想要实现多次，可以watch监听路由变化
