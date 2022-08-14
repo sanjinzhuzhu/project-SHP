@@ -85,14 +85,13 @@
                 <dt class="title">{{ spuSaleAttr.saleAttrName }}</dt>
                 <dd
                   changepirce="0"
-                  :class="{ active:spuSaleAttrValue.isChecked == 1 }"
+                  :class="{ active: spuSaleAttrValue.isChecked == 1 }"
                   v-for="spuSaleAttrValue in spuSaleAttr.spuSaleAttrValueList"
                   :key="spuSaleAttrValue.id"
+                  @click="changeActive(spuSaleAttr.spuSaleAttrValueList)"
                 >
-                  {{ spuSaleAttrValue.saleAttrValueName }}
+                  {{ spuSaleAttrValue.saleAttrValueName, }}
                 </dd>
-                <dd changepirce="40">银色</dd>
-                <dd changepirce="90">黑色</dd>
               </dl>
             </div>
             <div class="cartWrap">
@@ -363,6 +362,17 @@ export default {
     skuImageList() {
       //如果服务器数据没有回来，skuInfo这个数据就是空
       return this.skuInfo.skuImageList || [];
+    },
+  },
+  methods: {
+    //产品的售卖属性切换高亮
+    changeActive(saleAttrValue,arr) {
+      //遍历全部的售卖属性为0 没有高亮了
+     arr.forEach(item=>{
+      item.isChecked = 0;
+     });
+     //点击的那个售卖属性值有高亮
+     saleAttrValue.isChecked = 1;
     },
   },
 };
