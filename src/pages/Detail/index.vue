@@ -356,6 +356,11 @@
     components: {
       ImageList,
       Zoom
+    },
+    mounted(){
+      //派发actin获取产品详情的信息
+      console.log(this.$route.params);
+      this.$store.dispatch('getGoodInfo',this.$route.params.skuid)
     }
   }
 </script>
