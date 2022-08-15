@@ -2,6 +2,8 @@
 import axios from "axios";
 //引入进度条
 import nprogress from "nprogress";
+//在当前模块中引入store
+import store from "@/store"
 //引入进度条样式
 import "nprogress/nprogress.css";
 //引入vuex仓库模块
@@ -23,6 +25,14 @@ const requests = axios.create({
 requests.interceptors.request.use((config) => {
     //config:配置对象，对象里面有一个属性很重要，headers请求头
     //进度条开始动
+
+    //测试仓库是否引入
+    console.log(store);
+    if(store.state.detail.uuid_token){
+        //请求头添加一个字段，和后台老师商量好了
+        config.headers.usersTemId = store.state.detail.uuid_token
+        //在刷新点击页面search ，刷新一下，查看网络中list有没有出现usersTemId: 78f7b1a8-d575-40c2-a94e-0588e023fc03
+    }
     nprogress.start();
     return config;
 })
