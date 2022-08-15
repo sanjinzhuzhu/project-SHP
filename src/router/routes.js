@@ -4,6 +4,7 @@ import Search from '@/pages/Search'
 import Login from '@/pages/login'
 import Register from '@/pages/Register'
 import Detail from '@/pages/Detail'
+
 export default [
     //配置路由
     {

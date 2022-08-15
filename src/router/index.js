@@ -3,7 +3,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import routes from './routes';
-// import { VueRouter } from "vue-router";
+
 //使用插件
 Vue.use(VueRouter);
 
