@@ -5,8 +5,14 @@ import Login from '@/pages/login'
 import Register from '@/pages/Register'
 import Detail from '@/pages/Detail'
 import AddCartSuccess from '@/pages/AddCartSuccess'
+import ShopCart from '@/pages/ShopCart'
 export default [
     //配置路由  path：路由都是小写
+    {    
+        path: "/shopcart",
+        component: ShopCart,
+        meta: { show: true }
+    },
     {    
         path: "/addcartsuccess",
         name:'addcartsuccess',
