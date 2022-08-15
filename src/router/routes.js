@@ -4,9 +4,15 @@ import Search from '@/pages/Search'
 import Login from '@/pages/login'
 import Register from '@/pages/Register'
 import Detail from '@/pages/Detail'
-
+import AddCartSuccess from '@/pages/AddCartSuccess'
 export default [
-    //配置路由
+    //配置路由  path：路由都是小写
+    {    
+        path: "/addcartsuccess",
+        name:'addcartsuccess',
+        component: AddCartSuccess,
+        meta: { show: true }
+    },
     {
         path: "/detail/:skuid",
         component: Detail,

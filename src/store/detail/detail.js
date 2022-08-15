@@ -1,4 +1,4 @@
-import { reqGoodsInfo } from "@/api"
+import { reqGoodsInfo, reqAddOrUpdateShopCart } from "@/api"
 const state = {
     goodInfo: {},
 }
@@ -12,6 +12,18 @@ const actions = {
         let result = await reqGoodsInfo(skuId)
         if (result.code == 200) {
             commit('GETGOODINFO', result.data);
+        }
+    },
+    async addOrUpdateShopCart({ commit }, { skuId, skuNum }) {
+        //加入购物车返回结果
+        let result = await reqAddOrUpdateShopCart(skuId, skuNum)
+        //加入购物车成功
+        if (result.code = 200) {
+            return "ok"
+
+        } else {
+            //加入购物车失败
+            return Promise.reject(new Error('faile'))
         }
     }
 }
@@ -29,7 +41,7 @@ const getters = {
     },
     //产品售卖属性的简化
     spuSaleAttrList(state) {
-        return state.goodInfo.spuSaleAttrList|| [];
+        return state.goodInfo.spuSaleAttrList || [];
     }
 }
 

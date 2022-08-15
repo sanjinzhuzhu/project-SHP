@@ -96,12 +96,26 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt" />
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input
+                  autocomplete="off"
+                  class="itxt"
+                  v-model="skuNum"
+                  @change="changeSkuNum"
+                />
+                <a href="javascript:" class="plus" @click="skuNum++">+</a>
+                <a
+                  href="javascript:"
+                  class="mins"
+                  @click="skuNum > 1 ? skuNum-- : (skuNum = 1)"
+                  >-</a
+                >
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <!-- 以前的理由跳转，从A路由调转到B路由，这里加入购物车，进行 
+                 路由跳转之前，发送请求 把购买的产品的信息通过请求的形式通知服务器，
+                 服务器进行相应的存储
+                 -->
+                <a @click="addShopCar">加入购物车</a>
               </div>
             </div>
           </div>
@@ -346,7 +360,12 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "Detail",
-
+  //购买产品的个数
+  data() {
+    return {
+      skuNum: 1,
+    };
+  },
   components: {
     ImageList,
     Zoom,
@@ -366,13 +385,53 @@ export default {
   },
   methods: {
     //产品的售卖属性切换高亮
-    changeActive(saleAttrValue,arr) {
+    changeActive(saleAttrValue, arr) {
       //遍历全部的售卖属性为0 没有高亮了
-     arr.forEach(item=>{
-      item.isChecked = 0;
-     });
-     //点击的那个售卖属性值有高亮
-     saleAttrValue.isChecked = 1;
+      arr.forEach((item) => {
+        item.isChecked = 0;
+      });
+      //点击的那个售卖属性值有高亮
+      saleAttrValue.isChecked = 1;
+    },
+    //表单元素修改产品个数
+    changeSkuNum(event) {
+      //用户输入进来的文本*1
+      let value = event.target.value * 1;
+      //用户输入进来的不合规
+      if (isNaN(value) || value < 1) {
+        this.skuNum = 1;
+      } else {
+        this.skuNum = parseInt(value);
+      }
+    },
+    //加入购物车的回调函数
+    async addShopCar() {
+      //1.发送请求-- 将产品加入到数据库(通知服务器)
+
+      //加入购物车返回的解构
+      //加入购物车以后(发请求)，前台将参数带给服务器
+      //服务器写入数据成功，并没有返回其他的数据，只是返回code=200，代表这次操作成功
+      //因为不需要在存储数据
+      //2.服务器存储成功 ---进行路由跳转传递参数
+      //3.失败，给用户进行提示
+      try {
+        //成功
+        await this.$store.dispatch("addOrUpdateShopCart", {
+          skuId: this.$route.params.skuid,
+          skuNum: this.skuNum,
+        });
+        //路由跳转
+        //在路由跳转的时候还需要将产品的信息带给下一季的路由组件
+        //一些简单的数据skuNum，通过query形式给路由组件传递过去
+        //产品信息的数据【比较复杂：skuInfo】，通过会话存储（不持久化，会话结束数据消失）
+        //本地存储和会话存储 一般是字符串
+        sessionStorage.setItem("SKUINFO",JSON.stringify(this.skuInfo));
+        this.$router.push({name:'addcartsuccess',query:{skuNum:this.skuNum}});
+      } catch (error) {
+        //失败
+        alert(error.message);
+
+      }
     },
   },
 };
