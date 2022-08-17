@@ -17,6 +17,7 @@
               type="checkbox"
               name="chk_list"
               :checked="cart.isChecked == 1"
+              @change="updateChecked(cart, $event)"
             />
           </li>
           <li class="cart-list-con2">
@@ -152,6 +153,23 @@ export default {
         await this.$store.dispatch("deleteCartListBySkuId", cart.skuId);
         this.getData();
       } catch (error) {
+        alert(error.message);
+      }
+    },
+    //修改某一个产品的勾选状态
+    async updateChecked(cart, event) {
+      //带给服务器的参数isChecked,不是布尔值，应该是0｜1
+      //console.log(event.target.checked);
+      try {
+        //如果修改数据成功，还需要再次获取服务器的数据（购物车的数据）
+        let isChecked = event.target.checked ? "1" : "0";
+        await this.$store.dispatch("updateCheckedById", {
+          skuId: cart.skuId,
+          isChecked,
+        });
+        this.getData();
+      } catch (error) {
+        //如果失败提示
         alert(error.message);
       }
     },
