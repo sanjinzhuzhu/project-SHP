@@ -37,19 +37,32 @@ const actions = {
     },
     //删除全部勾选的产品 可以去调deleteCartListBySkuId
     //context：小仓库，commit[提交mutations修改state] getters[计算属性] dispath[派发action] state[当前仓库数据]
-    deleteAllCheckedCart({dispatch,getters}) {
+    deleteAllCheckedCart({ dispatch, getters }) {
         //console.log(getters.cartList.cartInfoList);
         //获取购物车中全部的产品(是一个数组)
         let PromiseAll = [];
         getters.cartList.cartInfoList.forEach(item => {
             // console.log(123);
-            let promise = item.isChecked==1?dispatch('deleteCartListBySkuId',item.skuId):'';
+            let promise = item.isChecked == 1 ? dispatch('deleteCartListBySkuId', item.skuId) : '';
             //将每一次返回的Promise添加到数组当中
             PromiseAll.push(promise);
         });
         //只要全部的p1｜p2都成功，返回结果即位成功
         //如果有一个失败，返回即为失败结果
         return Promise.all(PromiseAll)
+    },
+    //修改全部产品的状态
+    updateAllCarIsChecked({ dispatch, state }, isChecked) {
+        // console.log(state);
+        // console.log(isChecked);
+        //数组
+        let promiseAll = [];
+        state.cartList[0].cartInfoList.forEach(item => {
+            let promise = dispatch('updateCheckedById', { skuId: item.skuId, isChecked })
+            promiseAll.push(promise);
+        })
+       // 最终返回结果
+       return Promise.all(promiseAll)
     }
 };
 const getters = {
