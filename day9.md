@@ -52,7 +52,17 @@ Array(0)这里发请求的时候，是获取不到你购物车里面的数据，
 
 
 四、修改购物车产品的数量(需要发请求：参数理解)
+a.发请求
+export const reqDeleteCartById = (skuId)=>requests({url:`/cart/deleteCart/${skuId}`,method:'delete'});
+
+b.shopcart Vuex获数据进行配置
+c.在去shopcart文件index.vue中的结构中找到第六个类 写点击事件
 
 
+五、删除某一个产品[函数节流]
+<!-- import throttle from "lodash/throttle"; -->
 
-五、删除某一个产品
+六、修改商品选中的状态
+1.发请求  
+
+
