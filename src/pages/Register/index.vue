@@ -96,7 +96,8 @@ export default {
         //将组件的code属性值变为仓库中的验证码
         //console.log(this.$store);
         this.code = this.$store.state.user.code;
-      } catch (error) {}
+      } catch (error) {
+      }
     },
     //用户注册
     async userRegister() {
@@ -112,7 +113,9 @@ export default {
             password,
           });
           this.$router.push('/login');
-      } catch (error) {}
+      } catch (error) {
+         alert(error.message)
+      }
     },
   },
 };

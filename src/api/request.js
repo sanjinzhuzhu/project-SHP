@@ -27,11 +27,17 @@ requests.interceptors.request.use((config) => {
     //进度条开始动
 
     //测试仓库是否引入
-    console.log(store);
+    //console.log(store);
+    
+    //需要带uuid给服务器
     if(store.state.detail.uuid_token){
         //请求头添加一个字段，和后台老师商量好了
         config.headers.userTempId = store.state.detail.uuid_token
         //在刷新点击页面search ，刷新一下，查看网络中list有没有出现userTempId: 78f7b1a8-d575-40c2-a94e-0588e023fc03
+    }
+    //需要带token给服务器 账户325436
+    if(store.state.user.token){
+        config.headers.token = store.state.user.token;
     }
     nprogress.start();
     return config;

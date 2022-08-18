@@ -50,6 +50,8 @@ export default {
   mounted(){
     //派发action，获取floot组件的数据
     this.$store.dispatch('getFloorList')
+    //派发action，获取用户信息token在首页展示
+    this.$store.dispatch('getUserInfo')
   },
   computed:{
     ...mapState({
