@@ -16,8 +16,8 @@
           </p>
           <!-- 登录了 -->
           <p>
-            <a>{{userName}}</a>
-            <a class="register">退出登录</a>
+            <a>{{ userName }}</a>
+            <a class="register" @click="logout">退出登录</a>
           </p>
         </div>
         <div class="typeList">
@@ -119,6 +119,19 @@ export default {
       //   } else {
       //     this.$router.push(location);
     },
+    //退出登录
+    logout() {
+      //退出登录需要做的事情
+      //需要做的事情：发请求 通知服务器退出登录  清除数据 token
+      //清除项目当中的数据【userInfo、token】
+      //alert(123);
+      try {
+        //如果退出成功
+        this.$store.dispatch("userLogout");
+        //回到首页
+        this.$router.push("/home");
+      } catch (error) {}
+    },
   },
   mounted() {
     // 通过全局事件总线清除关键字  接受
@@ -126,12 +139,12 @@ export default {
       this.keyword = "";
     });
   },
-  computed:{
+  computed: {
     //用户名信息
-    userName(){
+    userName() {
       return this.$store.state.user.userInfo.name;
-    }
-  }
+    },
+  },
 };
 </script>
 

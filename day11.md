@@ -10,3 +10,5 @@ a,存在问题
 多个组件展示用户信息需要在每个组件的mounted触发 this.$store.dispatch('getUserInfo')不行
 b,存在问题
 用户已经登录了，就不应该会登录页
+
+二、退出登录
