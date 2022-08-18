@@ -24,6 +24,7 @@ import home from './home';
 import search from './search';
 import detail from './detail/detail';
 import shopcart from './shopcart/shopcart';
+import user from './user/user'
 //对外暴露Store类的一个实例
 export default new Vuex.Store({
     // state,
@@ -34,6 +35,7 @@ export default new Vuex.Store({
         home,
         search,
         detail,
-        shopcart
+        shopcart,
+        user,
     }
 })
