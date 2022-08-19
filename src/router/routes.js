@@ -6,8 +6,14 @@ import Register from '@/pages/Register'
 import Detail from '@/pages/Detail'
 import AddCartSuccess from '@/pages/AddCartSuccess'
 import ShopCart from '@/pages/ShopCart'
+import Trade from '@/pages/Trade'
 export default [
     //配置路由  path：路由都是小写
+    {    
+        path: "/trade",
+        component: Trade,
+        meta: { show: true }
+    },
     {    
         path: "/shopcart",
         component: ShopCart,
