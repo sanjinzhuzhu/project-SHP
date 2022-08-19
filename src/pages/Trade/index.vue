@@ -11,7 +11,7 @@
         <span class="username" :class="{ selected: address.isDefault == 1 }">{{
           address.consignee
         }}</span>
-        <p @click="changeDefault(address,addressInfo)">
+        <p @click="changeDefault(address, addressInfo)">
           <span class="s1">{{ address.fullAddress }}</span>
           <span class="s2">{{ address.phoneNum }}</span>
           <span class="s3" v-show="address.isDefault == 1">默认地址</span>
@@ -34,38 +34,28 @@
       </div>
       <div class="detail">
         <h5>商品清单</h5>
-        <ul class="list clearFix">
+        <ul
+          class="list clearFix"
+          v-for="order in orderInfo.detailArrayList"
+          :key="order.skuId"
+        >
           <li>
-            <img src="./images/goods.png" alt="" />
+            <img
+              :src="order.imUrl"
+              alt=""
+              style="width: 100px; height: 100px"
+            />
           </li>
           <li>
             <p>
-              Apple iPhone 6s (A1700) 64G 玫瑰金色
-              移动联通电信4G手机硅胶透明防摔软壳 本色系列
+              {{ order.skuName }}
             </p>
             <h4>7天无理由退货</h4>
           </li>
           <li>
-            <h3>￥5399.00</h3>
+            <h3>{{ order.orderPrice }}</h3>
           </li>
-          <li>X1</li>
-          <li>有货</li>
-        </ul>
-        <ul class="list clearFix">
-          <li>
-            <img src="./images/goods.png" alt="" />
-          </li>
-          <li>
-            <p>
-              Apple iPhone 6s (A1700) 64G 玫瑰金色
-              移动联通电信4G手机硅胶透明防摔软壳 本色系列
-            </p>
-            <h4>7天无理由退货</h4>
-          </li>
-          <li>
-            <h3>￥5399.00</h3>
-          </li>
-          <li>X1</li>
+          <li>{{ order.skuNum }}</li>
           <li>有货</li>
         </ul>
       </div>
@@ -74,6 +64,7 @@
         <textarea
           placeholder="建议留言前先与商家沟通确认"
           class="remarks-cont"
+          v-model="msg"
         ></textarea>
       </div>
       <div class="line"></div>
@@ -86,8 +77,11 @@
     <div class="money clearFix">
       <ul>
         <li>
-          <b><i>1</i>件商品，总商品金额</b>
-          <span>¥5399.00</span>
+          <b
+            ><i>{{ orderInfo.totalNum }}</i
+            >件商品，总商品金额</b
+          >
+          <span>{{ orderInfo.originalTotalAmount }}</span>
         </li>
         <li>
           <b>返现：</b>
@@ -100,24 +94,34 @@
       </ul>
     </div>
     <div class="trade">
-      <div class="price">应付金额:　<span>¥5399.00</span></div>
+      <div class="price">
+        应付金额:　<span>{{ orderInfo.totalAmount }}</span>
+      </div>
       <div class="receiveInfo">
         寄送至:
-        <span>{{userDefaultAddress.fullAddress}}</span>
-        收货人：<span>{{userDefaultAddress.consignee}}</span>
-        <span>{{userDefaultAddress.phoneNum}}</span>
+        <span>{{ userDefaultAddress.fullAddress }}</span>
+        收货人：<span>{{ userDefaultAddress.consignee }}</span>
+        <span>{{ userDefaultAddress.phoneNum }}</span>
       </div>
     </div>
     <div class="sub clearFix">
-      <router-link class="subBtn" to="/pay">提交订单</router-link>
+      <!-- <router-link class="subBtn" to="/pay">提交订单</router-link> -->
+      <a class="subBtn" @click="submitOrder">提交订单</a>
     </div>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
+
 export default {
   name: "Trade",
+  data() {
+    return {
+      //收集买家的留言信息
+      msg: "",
+    };
+  },
   //生命周期函数: 挂载完毕
   mounted() {
     this.$store.dispatch("getUserAddress"); //记住得到来进行派发，而不是请求的
@@ -125,12 +129,13 @@ export default {
   },
   computed: {
     ...mapState({
-      addressInfo: state=> state.trade.address,
+      addressInfo: state => state.trade.address,
+      orderInfo: state => state.trade.orderInfo,
     }),
     //将来提交订单最终选中地址
     userDefaultAddress() {
-     // find查找数组当中符合条件的元素返回，为最终结果 item 里面等于1的对象
-      return this.addressInfo.find(item => item.isDefault == 1)||{};
+      // find查找数组当中符合条件的元素返回，为最终结果 item 里面等于1的对象
+      return this.addressInfo.find(item => item.isDefault == 1) || {};
     },
   },
   methods: {
@@ -140,6 +145,27 @@ export default {
       addressInfo.forEach(item => item.isDefault = 0);
       address.isDefault = 1;
     },
+    //提交订单
+    async submitOrder() {
+      // console.log(this.$API);
+      //需要带参数
+      //订单编码
+      let { tradeNo } = this.orderInfo;
+      //其余六个参数
+      let data = {
+        // tradeNo:"this.orderInfo.tradeNo",
+        consignee: this.userDefaultAddress.consignee,
+        consigneeTel: this.userDefaultAddress.phoneNum,
+        deliveryAddress: this.userDefaultAddress.fullAddress,
+        paymentWay: "ONLINE",
+        orderComment: this.msg,
+        orderDetailList: this.orderInfo.detailArrayList,
+          
+      };
+      //需要带参数的:tradeNo
+      let result = await this.$API.reqSubmitOrder(tradeNo,data);
+      console.log(result);
+    }, 
   },
 };
 </script>

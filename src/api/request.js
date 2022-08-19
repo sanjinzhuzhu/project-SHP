@@ -33,6 +33,7 @@ requests.interceptors.request.use((config) => {
     if(store.state.detail.uuid_token){
         //请求头添加一个字段，和后台老师商量好了
         config.headers.userTempId = store.state.detail.uuid_token
+        config.headers.userId = '1'
         //在刷新点击页面search ，刷新一下，查看网络中list有没有出现userTempId: 78f7b1a8-d575-40c2-a94e-0588e023fc03
     }
     //需要带token给服务器 账户325436

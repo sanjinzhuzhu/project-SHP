@@ -16,6 +16,12 @@ Vue.component(Pagination.name, Pagination);
 import '@/mock/mockServe';
 //引入swiper样式
 import "swiper/css/swiper.min.css";
+
+
+//统一接口api文件夹里面全部请求汗水
+//统一引入
+import * as API from '@/api'
+console.log(API);
 import { reqGetSearchInfo } from '@/api';
 console.log(reqGetSearchInfo({}));
 
@@ -27,6 +33,7 @@ new Vue({
   // 全局事件总线注册
   beforeCreate() {
     Vue.prototype.$bus = this;
+    Vue.prototype.$API = API;
   },
   //注册路由：底下的写法KV一致省略V【router小写的】
   router,
