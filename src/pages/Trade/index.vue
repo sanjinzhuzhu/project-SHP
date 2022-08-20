@@ -155,7 +155,7 @@ export default {
       let { tradeNo } = this.orderInfo;
       //其余六个参数
       let data = {
-        // tradeNo:"this.orderInfo.tradeNo",
+        
         consignee: this.userDefaultAddress.consignee,
         consigneeTel: this.userDefaultAddress.phoneNum,
         deliveryAddress: this.userDefaultAddress.fullAddress,
