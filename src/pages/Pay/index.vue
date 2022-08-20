@@ -95,6 +95,7 @@
 </template>
 
 <script>
+import QRCode from 'qrcode'
 export default {
   name: "Pay",
   data() {
@@ -119,8 +120,11 @@ export default {
         this.payInfo = result.data;
       }
     },
-    open() {
-        this.$alert('<strong>确定 <i>进行</i> 微信支付</strong>', '微信支付', {
+   async open() {
+      //生成二维码、
+      let url = await QRCode.toDataURL(this.payInfo.codeUrl)
+      //console.log(result);
+        this.$alert(`<img src=${url} />`, '请进行微信支付', {
           dangerouslyUseHTMLString: true,
           center:true,
           showCancelButton:true,
