@@ -120,6 +120,8 @@ export default {
     return {
       //收集买家的留言信息
       msg: "",
+      //订单号
+      orderId:'' 
     };
   },
   //生命周期函数: 挂载完毕
@@ -164,7 +166,15 @@ export default {
       };
       //需要带参数的:tradeNo
       let result = await this.$API.reqSubmitOrder(tradeNo,data);
-      console.log(result);
+       //console.log(result);
+      if(result.code==200){
+        this.orderId= result.data;//如 data=11619
+        // 路由跳转+路由传参
+        this.$router.push(`/pay?orderId=`+this.orderId)
+        //http://localhost:8080/#/pay?order=11619
+      }else{
+        alert(result.data)
+      }
     }, 
   },
 };

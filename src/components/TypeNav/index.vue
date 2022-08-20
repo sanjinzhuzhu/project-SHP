@@ -94,7 +94,7 @@ export default {
   //组件挂载完毕：可以向服务器发请求
   mounted() {
     // //通知Vuex发请求，获取数据，存储于仓库中 派发action
-    // this.$store.dispatch("getCategoryList"); 移到app根组件里进行挂载了
+    this.$store.dispatch("categoryList"); //移到app根组件里进行挂载了
     //当组件挂在完毕，让show属性变为false
     //如果不是Home路由组件，讲typeNav进行隐藏
     if (this.$route.path != "/home") {
@@ -107,7 +107,7 @@ export default {
       // categoryList:(state)=>{
       //     return state.home.categoryList;
       // }简写为下面
-      categoryList: (state) => state.home.categoryList,
+      categoryList: state => state.home.categoryList,
     }),
   },
   methods: {
@@ -145,7 +145,7 @@ export default {
       if (categoryname) {
         //整理路由跳转的参数
         let location = { name: "search" };
-        let query = { categoryName: categoryname };
+        let query = { categoryName: "categoryname" };
         //如何知道是一、二、三级分类的a标签
         if (category1id) {
           query.category1Id = category1id;
