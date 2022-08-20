@@ -9,8 +9,14 @@ import ShopCart from '@/pages/ShopCart'
 import Trade from '@/pages/Trade'
 import Pay from '@/pages/Pay'
 import PaySuccess from '@/pages/PaySuccess'
+import Center from '@/pages/Center'
 export default [
     //配置路由  path：路由都是小写
+    {    
+        path: "/center",
+        component: Center,
+        meta: { show: true }
+    },
     {    
         path: "/paysuccess",
         component: PaySuccess,
