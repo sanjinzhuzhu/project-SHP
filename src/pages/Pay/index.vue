@@ -1,5 +1,6 @@
 <template>
   <div class="pay-main">
+    <el-button icon="el-icon-phone">测试</el-button>
     <div class="pay-container">
       <div class="checkout-tit">
         <h4 class="tit-txt">
@@ -77,7 +78,7 @@
 
         <div class="submit">
           <!-- <router-link class="btn" to="/paysuccess">立即支付</router-link> -->
-          <a class="btn" >立即支付</a>
+          <a class="btn" @click="open">立即支付</a>
         </div>
         <div class="otherpay">
           <div class="step-tit">
@@ -118,6 +119,17 @@ export default {
         this.payInfo = result.data;
       }
     },
+    open() {
+        this.$alert('<strong>确定 <i>进行</i> 微信支付</strong>', '微信支付', {
+          dangerouslyUseHTMLString: true,
+          center:true,
+          showCancelButton:true,
+          confirmButtonText:'支付遇见问题',
+          showClose:false
+
+
+        });
+      }
   },
 };
 </script>
