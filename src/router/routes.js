@@ -10,36 +10,50 @@ import Trade from '@/pages/Trade'
 import Pay from '@/pages/Pay'
 import PaySuccess from '@/pages/PaySuccess'
 import Center from '@/pages/Center'
+//引入二级路由组件
+import MyOrder from '@/pages/Center/myOrder'
+import GroupOrder from '@/pages/Center/groupOrder'
 export default [
     //配置路由  path：路由都是小写
-    {    
+    {
         path: "/center",
         component: Center,
-        meta: { show: true }
+        meta: { show: true },
+        //二级路由组件
+        children: [
+            {
+                path: "myorder",
+                component: MyOrder
+            },
+            {
+                path: "grouporder",
+                component: GroupOrder
+            },
+        ]
     },
-    {    
+    {
         path: "/paysuccess",
         component: PaySuccess,
         meta: { show: true }
     },
-    {    
+    {
         path: "/pay",
         component: Pay,
         meta: { show: true }
     },
-    {    
+    {
         path: "/trade",
         component: Trade,
         meta: { show: true }
     },
-    {    
+    {
         path: "/shopcart",
         component: ShopCart,
         meta: { show: true }
     },
-    {    
+    {
         path: "/addcartsuccess",
-        name:'addcartsuccess',
+        name: 'addcartsuccess',
         component: AddCartSuccess,
         meta: { show: true }
     },
