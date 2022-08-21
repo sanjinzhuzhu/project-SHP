@@ -27,6 +27,7 @@ import "swiper/css/swiper.min.css";
 //统一接口api文件夹里面全部请求汗水
 //统一引入
 import * as API from '@/api'
+import cutedark from '@/assets/images/cutedark.gif'
 console.log(API);
 import { reqGetSearchInfo } from '@/api';
 console.log(reqGetSearchInfo({}));
@@ -34,6 +35,14 @@ console.log(reqGetSearchInfo({}));
 // //测试
 import { reqCategoryList } from '@/api';
 reqCategoryList();
+
+//引入插件
+import VueLazyload from 'vue-lazyload';
+//注册插件
+Vue.use(VueLazyload,{
+  //懒加载默认的图片
+  loading:cutedark
+})
 new Vue({
   render: h => h(App),
   // 全局事件总线注册
