@@ -43,6 +43,12 @@ Vue.use(VueLazyload,{
   //懒加载默认的图片
   loading:cutedark
 })
+
+//引入自定义插件 1 --去到
+import myplugins from './plugins/myPlugins';
+Vue.use(myplugins,{
+  name:'upper'
+})
 new Vue({
   render: h => h(App),
   // 全局事件总线注册

@@ -14,3 +14,9 @@
 四、图片懒加载
 
 https://www.npmjs.com/package/vue-lazyload
+
+五、自定义插件
+
+ 1.myPlugins.js----配置使用逻辑
+ 2.去main.js----引入
+ 3.app.vue---dom呈现样式数据
