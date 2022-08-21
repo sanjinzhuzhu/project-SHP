@@ -63,3 +63,5 @@ VeeValidate.Validator.extend('agree',{
     },
     getMessage:field => field + '必须同意'
 })
+
+七、路由懒加载
