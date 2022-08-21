@@ -80,14 +80,22 @@ router.beforeEach(async (to, from, next) => {
                 } catch (error) {
                     //token失效了
                     //清除token 获取不到用户的信息
-                  await  store.dispatch('userLogout');
-                  next('/login');
+                    await store.dispatch('userLogout');
+                    next('/login');
                 }
             }
         }
     } else {
-        //未登录 还没有处理完毕 后期处理
-        next()
+        //未登录：不能去交易相关、支付相关page|paysuccess 、个人中心
+        //未登录:去上面这些路由---跳登录页
+        let toPath = to.path;
+        if (toPath == '/trade' ||toPath == '/pay' ||toPath.indexOf('/center')!=-1 ){
+            next('/login?redirect='+toPath);
+        } else {
+            //去得不是上面这些路由(home|search|shopcart)放行
+            next()
+        }
+
     }
 })
 export default router;
