@@ -25,7 +25,7 @@ const getters = {
     //当前形参state，当前仓库中的state，并非大仓库中的那个state
     goodlist(state) {
         //这样写有问题 如果state.searchList.goodsList服务器的数据回来了，没问题是一个数组
-        //加入网络不行 没有网 state.searchList.goodsList应该返回的是undefined
+        //假如网络不行 没有网 state.searchList.goodsList应该返回的是undefined
         //计算的属性值至少给一个数组
 
         return state.searchList.goodsList || [];
